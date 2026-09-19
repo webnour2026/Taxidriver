@@ -30,24 +30,6 @@ jobs:
           echo "Fichiers téléchargés :"
           ls episodes/ | wc -l
 
-      - name: Corriger l'encodage (mojibake)
+      - name: Corriger l'encodage (Windows-1252 -> UTF-8)
         run: |
-          pip install ftfy --quiet
-          python3 - <<'EOF'
-          import glob, ftfy
-          for path in glob.glob("episodes/*.html"):
-              with open(path, "r", encoding="utf-8", errors="replace") as f:
-                  content = f.read()
-              fixed = ftfy.fix_text(content)
-              with open(path, "w", encoding="utf-8") as f:
-                  f.write(fixed)
-          print("Encodage corrigé pour tous les fichiers.")
-          EOF
-
-      - name: Commit et push
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add episodes/
-          git commit -m "Ajout des épisodes" || echo "Rien à commiter"
-          git push
+          python3 - <
