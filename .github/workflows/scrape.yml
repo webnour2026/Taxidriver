@@ -18,7 +18,7 @@ jobs:
           mkdir -p episodes
           echo "" > echec.txt
           for i in $(seq 1 49); do
-            wget --tries=3 --timeout=15 "http://www.geocities.ws/gmgazi/e${i}.html" -O "episodes/episode_${i}.html"
+            wget --tries=3 --timeout=15 --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36" "http://www.geocities.ws/gmgazi/e${i}.html" -O "episodes/episode_${i}.html"
             if [ $? -ne 0 ]; then
               echo "Episode $i : échec" >> echec.txt
               rm -f "episodes/episode_${i}.html"
