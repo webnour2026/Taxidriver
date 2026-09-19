@@ -11,11 +11,21 @@ jobs:
 
       - name: Télécharger les pages
         run: |
+          set +e
           mkdir -p episodes
+          echo "" > echec.txt
           for i in $(seq 1 49); do
-            wget "http://www.geocities.ws/gmgazi/e${i}.html" -O "episodes/episode_${i}.html"
+            wget --tries=3 --timeout=15 "http://www.geocities.ws/gmgazi/e${i}.html" -O "episodes/episode_${i}.html"
+            if [ $? -ne 0 ]; then
+              echo "Episode $i : échec" >> echec.txt
+              rm -f "episodes/episode_${i}.html"
+            fi
             sleep 1
           done
+          echo "----- Résumé -----"
+          cat echec.txt
+          echo "Fichiers téléchargés :"
+          ls episodes/ | wc -l
 
       - name: Commit et push
         run: |
